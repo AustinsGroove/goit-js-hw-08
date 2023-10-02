@@ -5,9 +5,14 @@ const iframe = document.querySelector('iframe');
 const player = new Player(iframe);
 
 if (localStorage['videoplayer-current-time']) {
-  player.setCurrentTime(
-    JSON.parse(localStorage.getItem('videoplayer-current-time'))
-  );
+  try {
+    player.setCurrentTime(
+      JSON.parse(localStorage.getItem('videoplayer-current-time'))
+    );
+  } catch (error) {
+    console.log(error.name);
+    console.log(error.message);
+  }
 }
 
 player.on('timeupdate', throttle(timeUpdateHandler, 1000));
@@ -17,5 +22,4 @@ function timeUpdateHandler(event) {
     'videoplayer-current-time',
     JSON.stringify(event.seconds)
   );
-  console.log(localStorage.getItem('videoplayer-current-time'));
 }
